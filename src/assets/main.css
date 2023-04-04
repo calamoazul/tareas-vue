@@ -10,6 +10,9 @@
   --primary-font: "Fira sans", sans-serif;
   --danger-color: rgb(220 38 38);
   --accent-color: rgb(16 185 129);
+  --info-color: blue;
+  --warning-color: orange;
+  --secondary-color: #c5c5d5;
 }
 
 html {

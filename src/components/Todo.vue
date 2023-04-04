@@ -1,24 +1,29 @@
 <template>
-    <div class="todo">
-        <p>{{ title }}</p>
-        <div @click="$emit('removeTodo')" class="button-close">&times;</div>
+  <div class="todo">
+    <p>{{ title }}</p>
+    <div class="container-buttons">
+      <Button @click="$emit('editTodo')" variant="secondary"><Pencil /></Button>
+      <Button @click="$emit('removeTodo')" variant="danger">&times;</Button>
     </div>
+  </div>
 </template>
 
 <script>
+import Button from "./Button.vue";
+import Pencil from "./icons/Pencil.vue";
 export default {
-    props: {
-        title: {
-            required: true,
-            type: String
-        }
+  components: { Button, Pencil },
+  props: {
+    title: {
+      required: true,
+      type: String,
     },
-    emits: ['removeTodo']
-}
+  },
+  emits: ["removeTodo", "editTodo"],
+};
 </script>
 
 <style scoped>
-
 .todo {
   display: flex;
   justify-content: space-between;
@@ -28,16 +33,10 @@ export default {
   padding: 20px;
   margin: 20px auto;
 }
-.button-close {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
-  font-size: 20px;
-  background-color: var(--danger-color);
-  width: 30px;
-  height: 30px;
-  border: none;
-  cursor: pointer;
+.container-buttons {
+    width: 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 </style>
