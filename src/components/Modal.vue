@@ -23,17 +23,17 @@ const emit = defineEmits(['close']);
 
 const modal = ref(null);
 
-const clickListener = reactive((e) => {
+const clickListener = (e) => {
     if(e.target === modal.value) {
         emit('close');
     }
-})
+};
 
-const pulseEscape = reactive((e) => {
+const pulseEscape = (e) => {
     if(e.key === "Escape") {
         emit('close');
     }
-});
+};
 
 onMounted(() => {
         window.addEventListener('click', clickListener);

@@ -19,6 +19,7 @@
       </template>
     </Modal>
     <AddTodoForm @submit="addTodoTitle" />
+    <Spinner class="spinner" v-if="isLoading" />
     <Todo
       v-for="todo in todos"
       :title="todo.title"
@@ -37,15 +38,12 @@ import EditTodo from "./components/EditTodo.vue";
 import Todo from "./components/Todo.vue";
 import Modal from "./components/Modal.vue";
 import Button from "./components/Button.vue";
+import Spinner from "./components/Spinner.vue";
+import { useFetch } from "./composables/fetch.js";
+import { useAlert } from "./composables/alert.js";
 import axios from "axios";
 import { ref, reactive } from "vue";
 
-const todos = ref([]);
-const alert = reactive({
-  message: "",
-  variant: "danger",
-  show: false,
-});
 const editTodo = reactive({
   showModal: false,
   newTitle: "",
@@ -55,19 +53,17 @@ const editTodo = reactive({
   },
 });
 
-getTodos();
+const { data: todos, error, isLoading } = useFetch("/api/tareas");
 
-async function getTodos() {
-  try {
-    const res = await axios.get("/api/tareas");
-    todos.value = res.data;
-  } catch (error) {
-    showAlert("No se ha podido conectar con el servidor", "danger");
-  }
+const { alert, showAlert } = useAlert();
+
+if(error) {
+  showAlert('No se ha podido conectar con el servidor');
 }
+
 async function addTodoTitle(title) {
   if (title === "") {
-    showAlert("La tarea no puede estar vacía", "danger");
+    showAlert("La tarea no puede estar vacía");
     return;
   }
   try {
@@ -97,7 +93,7 @@ async function updateTodo(newTitle) {
 
   try {
     await axios.put(`/api/tareas/${editTodo.todo.id}`, updatedTodo);
-    getTodos();
+    useFetch();
   } catch (error) {
     showAlert("No se ha podido actualizar la tarea", "danger");
   }
@@ -106,11 +102,6 @@ async function updateTodo(newTitle) {
 function showEditForm(content) {
   editTodo.showModal = true;
   editTodo.todo = { ...content };
-}
-function showAlert(message, variant) {
-  alert.show = true;
-  alert.message = message;
-  alert.variant = variant;
 }
 </script>
 
@@ -123,5 +114,8 @@ function showAlert(message, variant) {
 }
 .edit-button {
   margin-right: 20px;
+}
+.spinner {
+  margin: 30px auto;
 }
 </style>
