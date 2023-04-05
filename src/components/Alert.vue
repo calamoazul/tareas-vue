@@ -5,40 +5,40 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    message: {
-      type: String,
-    },
-    show: {
-      required: true,
-      type: Boolean,
-    },
-    variant: {
-      default: "danger",
-      type: String,
-      validator(value) {
-        const options = ["info", "success", "warning", "danger", "secondary"];
-        return options.includes(value);
-      },
-    },
-  },
-  emits: ["close"],
-  computed: {
-    backgroundColor() {
-      const options = {
-        danger: "var(--danger-color)",
-        info: "var(--info-color)",
-        success: "var(--accent-color)",
-        warning: "var(--warning-color)",
-        secondary: "var(--secondary-color)",
-      };
+<script setup>
+import { computed } from "vue";
 
-      return options[this.variant];
+const props = defineProps({
+  message: {
+    type: String,
+  },
+  show: {
+    required: true,
+    type: Boolean,
+  },
+  variant: {
+    default: "danger",
+    type: String,
+    validator(value) {
+      const options = ["info", "success", "warning", "danger", "secondary"];
+      return options.includes(value);
     },
   },
-};
+});
+
+const emit = defineEmits(["close"]);
+
+const backgroundColor = computed(() => {
+  const options = {
+    danger: "var(--danger-color)",
+    info: "var(--info-color)",
+    success: "var(--accent-color)",
+    warning: "var(--warning-color)",
+    secondary: "var(--secondary-color)",
+  };
+
+  return options[props.variant];
+});
 </script>
 
 <style scoped>
@@ -53,5 +53,6 @@ export default {
 }
 .button-close {
   font-size: 30px;
+  cursor: pointer;
 }
 </style>

@@ -2,25 +2,24 @@
   <div class="todo">
     <p>{{ title }}</p>
     <div class="container-buttons">
-      <Button @click="$emit('editTodo')" variant="secondary"><Pencil /></Button>
-      <Button @click="$emit('removeTodo')" variant="danger">&times;</Button>
+      <Button @click="emit('editTodo')" variant="secondary"><Pencil /></Button>
+      <Button @click="emit('removeTodo')" variant="danger">&times;</Button>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import Button from "./Button.vue";
 import Pencil from "./icons/Pencil.vue";
-export default {
-  components: { Button, Pencil },
-  props: {
+
+const props = defineProps({
     title: {
       required: true,
       type: String,
     },
-  },
-  emits: ["removeTodo", "editTodo"],
-};
+  });
+
+const emit = defineEmits(['editTodo', 'removeTodo']);
 </script>
 
 <style scoped>

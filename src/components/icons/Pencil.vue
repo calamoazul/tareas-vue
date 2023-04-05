@@ -16,13 +16,11 @@
   </svg>
 </template>
 
-<script>
+<script setup>
 
-export default {
-    props: {
+const props = defineProps({
         size: {
             default: '20px'
         }
-    }
-}
+    })
 </script>

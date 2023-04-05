@@ -1,70 +1,73 @@
 <template>
-    <div ref="modal" v-show="show" class="modal" role="alert">
-        <div class="modal-content">
-            <slot name="header" />
-            <slot name="body" />
-            <slot name="footer" />
-        </div>
+  <div ref="modal" v-show="show" class="modal" role="alert">
+    <div class="modal-content">
+      <slot name="header" />
+      <slot name="body" />
+      <slot name="footer" />
     </div>
+  </div>
 </template>
 
-<script>
+<script setup>
 
-export default {
-    props: {
+import {ref, reactive, onMounted, onBeforeUnmount} from "vue";
+
+const props = defineProps({
         show: {
             default: false,
             type: Boolean
         }
-    },
-    emits: ['close'],
-    data() {
-        return {
-            clickListener: (e) => {
-                if(e.target === this.$refs.modal) {
-                    this.$emit('close');
-                }
-            },
-            pulseEscape: (e) => {
-                if(e.key === "Escape") {
-                    this.$emit('close');
-                }
-            }
-        }
-    },
-    mounted() {
-        window.addEventListener('click', this.clickListener);
-        window.addEventListener('keydown', this.pulseEscape);
-    },
-    beforeUnmount() {
-        window.removeEventListener('click', this.clickListener);
-        window.removeEventListener('keydown', this.pulseEscape);
+    });
+
+const emit = defineEmits(['close']);
+
+const modal = ref(null);
+
+const clickListener = reactive((e) => {
+    if(e.target === modal.value) {
+        emit('close');
     }
-}
+})
+
+const pulseEscape = reactive((e) => {
+    if(e.key === "Escape") {
+        emit('close');
+    }
+});
+
+onMounted(() => {
+        window.addEventListener('click', clickListener);
+        window.addEventListener('keydown', pulseEscape);
+    });
+
+onBeforeUnmount(() => {
+        window.removeEventListener('click', clickListener);
+        window.removeEventListener('keydown', pulseEscape);
+    });
+
 </script>
 
 <style scoped>
-
 .modal {
-    position: fixed;
-    top: 0%;
-    left: 0%;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    padding-top: 100px;
-    background-color: rgba(0,0,0,0.4);
-    display: block;
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding-top: 100px;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: block;
 }
 
 .modal-content {
-    position: relative;
-    background-color: var(--bg-color);
-    margin: auto;
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  position: relative;
+  background-color: var(--bg-color);
+  margin: auto;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 </style>

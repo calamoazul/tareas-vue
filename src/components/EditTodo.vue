@@ -1,25 +1,22 @@
 <template>
   <form class="edit-form">
-    <input v-model="this.title" type="text" />
+    <input v-model="title" type="text" />
     <Button @click.prevent="editarTitle" variant="success">Editar</Button>
   </form>
 </template>
 
-<script>
+<script setup>
+
+import {ref, reactive} from "vue";
 import Button from "./Button.vue";
-export default {
-  components: { Button },
-  data() {
-    return {
-      title: '',
-    };
-  },
-  methods: {
-    editarTitle() {
-      this.$emit("textoEditado", this.title);
-    },
-  },
-};
+
+const title = ref('');
+
+const emit = defineEmits(['textoEditado']);
+
+function editarTitle() {
+  emit('textoEditado', title.value);
+}
 </script>
 
 <style scoped>

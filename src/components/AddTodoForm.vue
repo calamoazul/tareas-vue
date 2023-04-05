@@ -9,17 +9,12 @@
     </div>
 </template>
 
-<script>
+<script setup>
 
-export default {
-    emits: ['submit'],
-    data() {
-        return {
-            todoTitle: ""
-        }
-    }
-    
-}
+import {ref, reactive} from "vue";
+
+const todoTitle = ref("");
+
 </script>
 
 <style scoped>

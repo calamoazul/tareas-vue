@@ -2,9 +2,11 @@
 <button class="btn" :style="{backgroundColor}" v-bind="$attrs"><slot/></button>
 </template>
 
-<script>
-export default {
-    props: {
+<script setup>
+
+import {computed} from "vue";
+
+const props = defineProps({
         message: {
             default: '',
             type: String
@@ -17,10 +19,10 @@ export default {
                 return options.includes(value);
             }
         }
-    },
-    computed: {
-        backgroundColor() {
-            const options = {
+    });
+
+const backgroundColor = computed(() => {
+    const options = {
                 danger: "var(--danger-color)",
                 info: "var(--info-color)",
                 success: "var(--accent-color)",
@@ -28,10 +30,9 @@ export default {
                 secondary: "var(--secondary-color)"
             }
 
-            return options[this.variant];
-        }
-    }
-}
+            return options[props.variant];
+});
+ 
 </script>
 
 <style scoped>
