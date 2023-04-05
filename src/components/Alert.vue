@@ -7,6 +7,7 @@
 
 <script setup>
 import { computed } from "vue";
+import {useBackgroundColor, optionsColor} from "../composables/backgroundColor.js";
 
 const props = defineProps({
   message: {
@@ -16,29 +17,12 @@ const props = defineProps({
     required: true,
     type: Boolean,
   },
-  variant: {
-    default: "danger",
-    type: String,
-    validator(value) {
-      const options = ["info", "success", "warning", "danger", "secondary"];
-      return options.includes(value);
-    },
-  },
+  ...optionsColor
 });
 
 const emit = defineEmits(["close"]);
 
-const backgroundColor = computed(() => {
-  const options = {
-    danger: "var(--danger-color)",
-    info: "var(--info-color)",
-    success: "var(--accent-color)",
-    warning: "var(--warning-color)",
-    secondary: "var(--secondary-color)",
-  };
-
-  return options[props.variant];
-});
+const backgroundColor = useBackgroundColor(props);
 </script>
 
 <style scoped>

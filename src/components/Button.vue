@@ -5,33 +5,18 @@
 <script setup>
 
 import {computed} from "vue";
+import {useBackgroundColor, optionsColor} from '../composables/backgroundColor.js'
 
 const props = defineProps({
         message: {
             default: '',
             type: String
         },
-        variant: {
-            default: 'info',
-            type: String,
-            validator(value) {
-                const options = ['info', 'success', 'warning', 'danger', 'secondary'];
-                return options.includes(value);
-            }
-        }
+        ...optionsColor
     });
 
-const backgroundColor = computed(() => {
-    const options = {
-                danger: "var(--danger-color)",
-                info: "var(--info-color)",
-                success: "var(--accent-color)",
-                warning: "var(--warning-color)",
-                secondary: "var(--secondary-color)"
-            }
+const backgroundColor = useBackgroundColor(props);
 
-            return options[props.variant];
-});
  
 </script>
 

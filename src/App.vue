@@ -53,13 +53,11 @@ const editTodo = reactive({
   },
 });
 
-const { data: todos, error, isLoading } = useFetch("/api/tareas");
+const { data: todos, isLoading } = useFetch("/api/tareas", {
+  onError: () => showAlert('Fallo de conexión con el servidor')
+});
 
 const { alert, showAlert } = useAlert();
-
-if(error) {
-  showAlert('No se ha podido conectar con el servidor');
-}
 
 async function addTodoTitle(title) {
   if (title === "") {
@@ -72,14 +70,14 @@ async function addTodoTitle(title) {
     });
     todos.value.push(res.data);
   } catch (error) {
-    showAlert("No se ha podido guardar la tarea", "danger");
+    showAlert("No se ha podido guardar la tarea");
   }
 }
 async function remove(todoId) {
   try {
     await axios.delete(`/api/tareas/${todoId}`);
   } catch (error) {
-    showAlert("No se ha podido eliminar la tarea", "danger");
+    showAlert("No se ha podido eliminar la tarea");
   }
 
   todos.value = todos.value.filter((todo) => todo.id !== todoId);
@@ -95,7 +93,7 @@ async function updateTodo(newTitle) {
     await axios.put(`/api/tareas/${editTodo.todo.id}`, updatedTodo);
     useFetch();
   } catch (error) {
-    showAlert("No se ha podido actualizar la tarea", "danger");
+    showAlert("No se ha podido actualizar la tarea");
   }
 }
 
