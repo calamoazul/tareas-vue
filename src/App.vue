@@ -2,9 +2,9 @@
   <Navbar />
   <main class="container">
     <Alert
-      :show="showAlert"
-      message="El todo no puede estar vacío"
-      @close="showAlert = false"
+      :show="alert.show"
+      :message="alert.message"
+      @close="alert.show = false"
       variant="danger"
     />
     <Modal :show="this.editTodo.showModal" @close="this.editTodo.showModal = false">
@@ -52,8 +52,12 @@ export default {
   },
   data() {
     return {
-      showAlert: false,
       todos: [],
+      alert: {
+        message: '',
+        variant: 'danger',
+        show: false
+      },
       editTodo: {
         showModal: false,
         newTitle: '',
@@ -70,12 +74,12 @@ export default {
         const res = await axios.get("/api/tareas");
         this.todos = res.data;
       } catch (error) {
-        console.error(error);
+        this.showAlert('No se ha podido conectar con el servidor', 'danger');
       }
     },
     async addTodoTitle(title) {
       if (title === "") {
-        this.showAlert = true;
+        this.showAlert('La tarea no puede estar vacía', 'danger' );
         return;
       }
       try {
@@ -84,14 +88,14 @@ export default {
         });
         this.todos.push(res.data);
       } catch (error) {
-        console.error(error);
+        this.showAlert('No se ha podido guardar la tarea', 'danger');
       }
     },
     async remove(todoId) {
       try {
         await axios.delete(`/api/tareas/${todoId}`);
       } catch (error) {
-        console.error(error);
+        this.showAlert('No se ha podido eliminar la tarea', 'danger');
       }
 
       this.todos = this.todos.filter((todo) => todo.id !== todoId);
@@ -107,13 +111,18 @@ export default {
         await axios.put(`/api/tareas/${this.editTodo.todo.id}`, updatedTodo);
         this.getTodos();
       } catch (error) {
-        console.error(error);
+        this.showAlert('No se ha podido actualizar la tarea', 'danger');
       }
     },
     showEditForm(content) {
       this.editTodo.showModal = true;
       this.editTodo.todo = { ...content };
     },
+    showAlert(message, variant) {
+      this.alert.show = true;
+      this.alert.message = message;
+      this.alert.variant = variant;
+    }
   },
   created() {
     this.getTodos();
