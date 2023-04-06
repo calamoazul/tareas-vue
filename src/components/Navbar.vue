@@ -7,6 +7,7 @@
     
     <div class="menu">
       <ul>
+        <li><RouterLink to="/">Home</RouterLink></li>
         <li><RouterLink to="/nueva-tarea">Añadir Tarea</RouterLink></li>
         <li><RouterLink to="/about">Sobre mí</RouterLink></li>
       </ul>
@@ -43,5 +44,9 @@
   text-transform: uppercase;
   color: var(--text-color);
   text-decoration: none;
+}
+
+.menu a.router-link-active {
+  color: var(--accent-color);
 }
 </style>

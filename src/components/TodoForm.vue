@@ -1,11 +1,15 @@
 <template>
     <div class="container-form">
         <form class="todo-form">
+            <label>Título</label>
             <input v-model="todoData.title" placeholder="Escribe el nombre de tu tarea" type="text"/>
+            <label>Contenido</label>
             <input v-model="todoData.contenido" placeholder="Escribe el contenido de tu tarea" type="text"/>
+            <label>Fecha para hacer la tarea</label>
+            <input v-model="todoData.fecha" type="date"/>
         </form>
         <div>
-            <button @click="$emit('submit', todoData)">Añadir Tarea</button>
+            <button @click="$emit('submit', todoData)">Enviar</button>
         </div>
     </div>
 </template>
@@ -15,9 +19,25 @@
 import {ref, reactive} from "vue";
 
 const todoData = reactive({
-    title: "",
-    contenido: ""
+    title: props.title,
+    contenido: props.contenido,
+    fecha: props.fecha
 });
+
+const props = defineProps({
+    title: {
+        default: "",
+        type: String,
+    },
+    contenido: {
+        default: "",
+        type: String
+    },
+    fecha: {
+        default: "",
+        type: String
+    }
+})
 
 </script>
 
@@ -34,6 +54,12 @@ const todoData = reactive({
 form {
     width: 100%;
 }
+
+.container-form .todo-form {
+    display: flex;
+    flex-direction: column;
+
+}
 .container-form form input {
     height: 30px;
     padding: 10px;
@@ -49,5 +75,10 @@ form {
     color: var(--text-color);
     border: none;
     cursor: pointer;
+}
+.container-form label {
+    margin-bottom: 15px;
+    font-size: 20px;
+    font-weight: 800;
 }
 </style>
