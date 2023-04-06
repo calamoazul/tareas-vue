@@ -1,6 +1,7 @@
 <template>
   <div class="todo">
     <p>{{ title }}</p>
+    <p>{{ contenido }}</p>
     <div class="container-buttons">
       <Button @click="emit('editTodo')" variant="secondary"><Pencil /></Button>
       <Button @click="emit('removeTodo')" variant="danger">&times;</Button>
@@ -17,6 +18,9 @@ const props = defineProps({
       required: true,
       type: String,
     },
+    contenido: {
+      type: String
+    }
   });
 
 const emit = defineEmits(['editTodo', 'removeTodo']);

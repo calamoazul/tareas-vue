@@ -1,10 +1,11 @@
 <template>
     <div class="container-form">
         <form class="todo-form">
-            <input v-model="todoTitle" placeholder="Escribe el nombre de tu tarea" type="text"/>
+            <input v-model="todoData.title" placeholder="Escribe el nombre de tu tarea" type="text"/>
+            <input v-model="todoData.contenido" placeholder="Escribe el contenido de tu tarea" type="text"/>
         </form>
         <div>
-            <button @click="$emit('submit', todoTitle)">Añadir Tarea</button>
+            <button @click="$emit('submit', todoData)">Añadir Tarea</button>
         </div>
     </div>
 </template>
@@ -13,7 +14,10 @@
 
 import {ref, reactive} from "vue";
 
-const todoTitle = ref("");
+const todoData = reactive({
+    title: "",
+    contenido: ""
+});
 
 </script>
 
@@ -34,6 +38,7 @@ form {
     height: 30px;
     padding: 10px;
     width: 80%;
+    margin-bottom: 15px;
 }
 
 .container-form button {

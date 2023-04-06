@@ -4,7 +4,7 @@ function useAlert() {
 
     const alert = reactive({
         message: "",
-        variant: "danger",
+        variant: "",
         show: false,
     });
 
